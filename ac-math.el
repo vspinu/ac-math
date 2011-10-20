@@ -39,6 +39,7 @@
 ;;
 ;;; Code:
 
+(require 'auto-complete)
 
 (defconst ac-math-latex-commands
   '("address" "addtocounter" "addtolength" "addvspace" "Alph" "alph" "Alph
@@ -60,7 +61,7 @@
     "fussy" "gets" "glossary" "glossaryentry" "H "
     "headheight" "headsep" "height" "hfill" "hline" "hrulefill" "hspace"
     "Huge" "huge" "hyphenation" "i " "iff" "include" "includeonly"
-    "indent" "index" "indexentry" "input" "intextsep" "it" 
+    "indent" "index" "indexentry" "input" "intextsep" "it"
      "item" "itemindent" "itemsep" "itshape" "j " "kill"
     "label" "labelenumi" "labelenumii" "labelenumiii" "labelenumiv"
     "labelitemi" "labelitemii" "labelitemiii" "labelitemiv" "labelsep"
@@ -3075,18 +3076,21 @@ command."
         (mapcar '(lambda (el)
              (let* ((symb (substring (nth 1 el) 1))
                     (uni-symb (nth 2 el))
+                    (sep (if unicode "@"
+                           "#"))
                     (uni-symb (and uni-symb (char-to-string
                                              (decode-char 'ucs uni-symb))))
-                    (uni-string (propertize (concat 
-                                             (propertize "@" 'display "")
+                    (uni-string (propertize (concat
+                                             (propertize sep 'display "")
                                              " " uni-symb)
                                             'intangible t
+                                            'uni-symb t
                                             ))
                     )
                (if (and unicode (null uni-symb))
                    nil
                  (cons (concat symb uni-string)
-                       (if unicode 
+                       (if unicode
                            uni-symb
                          symb))
                  )
@@ -3094,22 +3098,26 @@ command."
           alist
           )))
 
-(defcustom ac-math-symbols-latex
+(defvar ac-math-symbols-latex
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist)
            (ac-math--make-candidates ac-latex-math-extended-alist)))
   "List of math completion candidates.")
 
-(defcustom ac-math-symbols-unicode
+(defvar ac-math-symbols-unicode
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist t)
            (ac-math--make-candidates ac-latex-math-extended-alist t)))
   "List of math completion candidates.")
 
+(defcustom ac-math-unicode-in-math-p nil
+  "Set this to t if need unicode in math enviroments")
+
 (defun ac-math-action-latex (&optional delete-N)
   "Function to be used in ac action property.
 Substitute previous completion with the value of 'value property."
   (let* ((start (previous-single-property-change (point) 'value))
+         (start-uni (previous-single-property-change (point) 'uni-symb))
          (value (and start
                      (get-text-property start 'value)))
          (inhibit-point-motion-hooks t)
@@ -3119,12 +3127,14 @@ Substitute previous completion with the value of 'value property."
                           1)))
          )
     (when value
+      (delete-region start-uni (point))
+      (undo-boundary)
       (delete-region start (point))
       (if  delete-N
           (backward-delete-char delete-N))
-      (insert value)
-      )
-    ))
+      (insert value))
+    )
+  )
 
 (defun ac-math-action-unicode ()
   (ac-math-action-latex 1))
@@ -3142,9 +3152,10 @@ Substitute previous completion with the value of 'value property."
     )
 
 (defun ac-math-candidates-unicode ()
-    (when (not (ac-math-latex-math-face-p))
-               ac-math-symbols-unicode)
-      )
+    (when (or ac-math-unicode-in-math-p
+              (not (ac-math-latex-math-face-p)))
+      ac-math-symbols-unicode)
+    )
 
 (defvar ac-source-latex-commands
   '((candidates . ac-math-latex-commands)
