@@ -1,19 +1,19 @@
-This add-on defines three ac-sources for the *[http://cx4a.org/software/auto-complete/ auto-complete]* package:
+This add-on defines three ac-sources for the *[auto-complete](https://github.com/auto-complete)* package:
 
- * ac-source-latex-commands  - input latex commands 
- * ac-source-math-latex - input math latex tags  (_by default, active only in math environments_)
+ * ac-source-latex-commands		  - input latex commands 
+ * ac-source-math-latex		 - input math latex tags  (by default, active only in math environments)
 
       ![symbols](https://raw.github.com/vitoshka/ac-math/master/img/latex-symbols.png)
 
  * ac-source-math-unicode - input of unicode symbols (_by default, active everywhere except math environments_)
 
-     ![math](https://raw.github.com/vitoshka/ac-math/master/img/unicode-math.png)
+      ![math](https://raw.github.com/vitoshka/ac-math/master/img/unicode-math.png)
 
-To start the math completion by typing the prefix "\" key. To select the completion type RET (`ac-complete'). Completion on TAB (`ac-expand`) is not working that well as yet.
+Start math completion by typing the prefix "\" key. Select the completion type RET (`ac-complete`). Completion on TAB (`ac-expand`) is not working that well as yet.
 
 Depending on the context the unicode symbol or latex \tag will be inserted.
 
-== Activation ==
+## Activation ##
 
 You must have  *[auto-complete](https://github.com/auto-complete)* package installed.
 
@@ -43,7 +43,7 @@ If you are using 'flyspell' you might want to activate the [workaround](http://w
 (ac-flyspell-workaround)
 ```
 
-== Unicode Input ==
+## Unicode Input ##
 
 To use unicode in full force with LaTeX you will need
 [XeTeX](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&item_id=xetex) bundle.
@@ -83,7 +83,7 @@ Suppose you want it for  mode `XXX`:
 ```
 
 
-== Other Sources ==
+## Other Sources ##
 
 
 Here is how to make the TaTeX completion work everywhere in LaTeX documents (default is only in math mode):
