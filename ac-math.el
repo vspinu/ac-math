@@ -31,7 +31,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Commentary:
+;;; Commentary:
 ;;
 ;; (See https://github.com/vitoshka/ac-math#readme for more)
 ;;
