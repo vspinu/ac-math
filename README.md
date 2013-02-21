@@ -17,8 +17,7 @@ Depending on the context the unicode symbol or latex \tag will be inserted.
 
 You must have  *[auto-complete](https://github.com/auto-complete)* package installed.
 
-Ac-math is available thorough MELPA repository. You can also download
-[ac-math.el](https://raw.github.com/vitoshka/ac-math/master/ac-math.el) directly
+Ac-math is available thorough [MELPA](http://melpa.milkbox.net/) repository. You can also download [ac-math.el](https://raw.github.com/vitoshka/ac-math/master/ac-math.el) directly
 and put it into your load-path directory.
 
 This is an example of how to activate the 'ac-math' in latex-mode:
