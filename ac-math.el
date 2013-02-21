@@ -1,12 +1,11 @@
 ;; ac-math.el --- Auto-complete sources for input of mathematical symbols and latex tags 
 ;;
-;; Filename: ac-math.el
-;; Author: Spinu Vitalie
-;; Maintainer: Spinu Vitalie
-;; Copyright (C) 2011, Spinu Vitalie, all rights reserved.
-;; URL: https://code.google.com/p/ac-math/
-;; Keywords: debug, watch, traceback, ESS, R
-;;
+;; Copyright (C) 2011-2013, Vitalie Spinu
+;; Author: Vitalie Spinu
+;; URL: https://github.com/vitoshka/ac-math
+;; Keywords: latex, auto-complete, Unicode, symbols
+;; Version: DEV
+;; Package-Requires: ((auto-complete "1.4"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; This file is *NOT* part of GNU Emacs.
@@ -101,7 +100,11 @@
 ;; (setq ac-math-unicode-in-math-p t)
 ;; ```
 ;; 
-;; You can always call UNDO to insert LaTeX command instead of Unicode character. For instance `\alp RET` inserts the character, then undo reinserts `\alpha`. Hence, you might consider removing `ac-source-math-latex` altogether from the list of `ac-sources` to increase the completion speed:
+;; You can always call UNDO to insert LaTeX command instead of Unicode
+;; character. For instance `\alp RET` inserts the character, then undo reinserts
+;; `\alpha`. Hence, you might consider removing `ac-source-math-latex`
+;; altogether from the list of `ac-sources` to increase the completion speed:
+;;
 ;; ```lisp
 ;; (defun ac-latex-mode-setup ()         
 ;;   (setq ac-sources
