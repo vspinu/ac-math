@@ -1,4 +1,4 @@
-;; ac-math.el --- Auto-complete sources for input of mathematical symbols and latex tags 
+;;; ac-math.el --- Auto-complete sources for input of mathematical symbols and latex tags 
 ;;
 ;; Copyright (C) 2011-2013, Vitalie Spinu
 ;; Author: Vitalie Spinu
