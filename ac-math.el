@@ -1,10 +1,10 @@
-;;; ac-math.el --- Auto-complete sources for input of mathematical symbols and latex tags 
+;;; ac-math.el --- Auto-complete sources for input of mathematical symbols and latex tags
 ;;
 ;; Copyright (C) 2011-2013, Vitalie Spinu
 ;; Author: Vitalie Spinu
 ;; URL: https://github.com/vitoshka/ac-math
 ;; Keywords: latex, auto-complete, Unicode, symbols
-;; Version: DEV
+;; Version: 1
 ;; Package-Requires: ((auto-complete "1.4"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
