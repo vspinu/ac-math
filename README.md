@@ -31,8 +31,7 @@ This is an example of how to activate the 'ac-math' in latex-mode:
 (defun ac-latex-mode-setup ()         ; add ac-sources to default ac-sources
   (setq ac-sources
      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
-               ac-sources))
-)
+               ac-sources)))
 
 (add-hook 'latex-mode-hook 'ac-latex-mode-setup)
 ```
@@ -58,8 +57,7 @@ You can always call UNDO to insert LaTeX command instead of Unicode character. F
 (defun ac-latex-mode-setup ()         
   (setq ac-sources
      (append '(ac-source-math-unicode ac-source-latex-commands)
-               ac-sources))
-)
+               ac-sources)))
 ```
 
 Unicode input is not restricted to LaTeX modes and is particularly useful in org-mode (with it's powerful exporting facilities), or web development tools where unicode is crucial.
@@ -68,17 +66,14 @@ Unicode input is not restricted to LaTeX modes and is particularly useful in org
 Suppose you want it for  mode `XXX`:
 
 ```lisp
-
 (require 'ac-math)
 
 (add-to-list 'ac-modes 'XXX-mode)
 
 (defun ac-XXX-mode-setup ()
-   (add-to-list 'ac-sources 'ac-source-math-unicode)
-)
+   (add-to-list 'ac-sources 'ac-source-math-unicode))
 
 (add-hook 'XXX-mode-hook 'ac-XXX-mode-setup)
-
 ```
 
 
@@ -92,8 +87,7 @@ Here is how to make the TaTeX completion work everywhere in LaTeX documents (def
 '((candidates . ac-math-symbols-latex)
   (prefix . "\\\\\\(.*\\)")
   (action . ac-math-action-latex)
-  (symbol . "l")
- ))
+  (symbol . "l")))
 ```
 
 
@@ -105,8 +99,7 @@ automatically on completion):
 '((candidates . ac-math-symbols-unicode)
   (prefix . "%\\(.*\\)")
   (action . ac-math-action-unicode)
-  (symbol . "u")
- ))
+  (symbol . "u")))
 ```
 
 Please let me know if you want anything different from above.
