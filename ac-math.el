@@ -3172,30 +3172,25 @@ actuall value inserted on RET completion.  If UNICODE is non-nill
 the value of VALUE is the unicode character else it's the latex
 command."
   (delq nil
-        (mapcar '(lambda (el)
-             (let* ((symb (substring (nth 1 el) 1))
-                    (uni-symb (nth 2 el))
-                    (sep (if unicode "@"
-                           "#"))
-                    (uni-symb (and uni-symb (char-to-string
-                                             (decode-char 'ucs uni-symb))))
-                    (uni-string (propertize (concat
-                                             (propertize sep 'display "")
-                                             " " uni-symb)
-                                            'intangible t
-                                            'uni-symb t
-                                            ))
-                    )
-               (if (and unicode (null uni-symb))
-                   nil
-                 (cons (concat symb uni-string)
-                       (if unicode
-                           uni-symb
-                         symb))
-                 )
-               ))
-          alist
-          )))
+        (mapcar
+         '(lambda (el)
+            (let* ((symb (substring (nth 1 el) 1))
+                   (sep (if unicode "@" "#"))
+                   (ch (and (nth 2 el)
+                            (decode-char 'ucs (nth 2 el))))
+                   (uni-symb (and ch
+                                  (char-to-string ch)))
+                   (uni-string (propertize (concat
+                                            (propertize sep 'display "")
+                                            " " uni-symb)
+                                           'intangible t
+                                           'uni-symb t)))
+              (unless (and unicode (null uni-symb))
+                (cons (concat symb uni-string)
+                      (if unicode
+                          uni-symb
+                        symb)))))
+         alist)))
 
 (defvar ac-math-symbols-latex
   (delete-dups
