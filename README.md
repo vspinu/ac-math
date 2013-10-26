@@ -83,7 +83,7 @@ Suppose you want it for  mode `XXX`:
 Here is how to make the TaTeX completion work everywhere in LaTeX documents (default is only in math mode):
 
 ```lisp
-(defvar ac-source-math-latex-everywere
+(defvar ac-source-math-latex-everywhere
 '((candidates . ac-math-symbols-latex)
   (prefix . "\\\\\\(.*\\)")
   (action . ac-math-action-latex)
