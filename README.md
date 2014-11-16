@@ -1,17 +1,23 @@
+
+NOTE: _Ac-math users are encouraged to switch to
+[`company-math`](https://github.com/vspinu/company-math). [`company-mode`](http://company-mode.github.io/)
+is a better framework and solves a number of notorious issues in
+[`auto-complete`](http://cx4a.org/software/auto-complete/)_.
+
+-------
+
 This add-on defines three ac-sources for the *[auto-complete](https://github.com/auto-complete)* package:
 
- * ac-source-latex-commands		  - input latex commands 
- * ac-source-math-latex		 - input math latex tags  (by default, active only in math environments)
+ * `ac-source-latex-commands`		  - input latex commands 
+ * `ac-source-math-latex`		 - input math latex tags  (by default, active only in math environments)
 
       ![symbols](https://raw.github.com/vitoshka/ac-math/master/img/latex-symbols.png)
 
- * ac-source-math-unicode - input of unicode symbols (_by default, active everywhere except math environments_)
+ * `ac-source-math-unicode` - input of unicode symbols (_by default, active everywhere except math environments_)
 
       ![math](https://raw.github.com/vitoshka/ac-math/master/img/unicode-math.png)
 
-Start math completion by typing the prefix "\" key. Select the completion type RET (`ac-complete`).
-
-Depending on the context the unicode symbol or latex \tag will be inserted.
+Start math completion by typing the prefix "\" key. Select the completion type RET (`ac-complete`). Depending on the context the unicode symbol or latex \tag will be inserted.
 
 ## Activation ##
 
@@ -33,7 +39,7 @@ This is an example of how to activate the 'ac-math' in latex-mode:
      (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
                ac-sources)))
 
-(add-hook 'latex-mode-hook 'ac-latex-mode-setup)
+(add-hook 'TeX-mode-hook 'ac-latex-mode-setup)
 ```
 
 If you are using 'flyspell' you might want to activate the [workaround](http://www.emacswiki.org/emacs/AutoComplete#toc6):
