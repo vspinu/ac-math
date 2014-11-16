@@ -3112,14 +3112,12 @@ command."
 			 symb)))))
          alist)))
 
-;;;###autoload
 (defconst ac-math-symbols-latex
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist)
            (ac-math--make-candidates ac-latex-math-extended-alist)))
   "List of math completion candidates.")
 
-;;;###autoload
 (defconst ac-math-symbols-unicode
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist t)
