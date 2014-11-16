@@ -9,7 +9,7 @@ This add-on defines three ac-sources for the *[auto-complete](https://github.com
 
       ![math](https://raw.github.com/vitoshka/ac-math/master/img/unicode-math.png)
 
-Start math completion by typing the prefix "\" key. Select the completion type RET (`ac-complete`). Completion on TAB (`ac-expand`) is not working that well as yet.
+Start math completion by typing the prefix "\" key. Select the completion type RET (`ac-complete`).
 
 Depending on the context the unicode symbol or latex \tag will be inserted.
 
@@ -24,7 +24,7 @@ This is an example of how to activate the 'ac-math' in latex-mode:
 
 ```lisp
 
-(require 'ac-math)
+(require 'ac-math) ; This is not needed when you install from MELPA
 
 (add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of `latex-mode`
 
@@ -43,21 +43,10 @@ If you are using 'flyspell' you might want to activate the [workaround](http://w
 
 ## Unicode Input ##
 
-To use unicode in full force with LaTeX you will need
-[XeTeX](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&item_id=xetex) bundle.
-
-By default unicode input (`ac-source-math-unicode`) is not activated in latex math environments. To activate, do
+By default unicode input (`ac-source-math-unicode`) is not activated in latex math environments. In order to activate it, do
  
 ```lisp
 (setq ac-math-unicode-in-math-p t)
-```
-
-You can always call UNDO to insert LaTeX command instead of Unicode character. For instance `\alp RET` inserts the character, then undo reinserts `\alpha`. Hence, you might consider removing `ac-source-math-latex` altogether from the list of `ac-sources` to increase the completion speed:
-```lisp
-(defun ac-latex-mode-setup ()         
-  (setq ac-sources
-     (append '(ac-source-math-unicode ac-source-latex-commands)
-               ac-sources)))
 ```
 
 Unicode input is not restricted to LaTeX modes and is particularly useful in org-mode (with it's powerful exporting facilities), or web development tools where unicode is crucial.
@@ -66,8 +55,6 @@ Unicode input is not restricted to LaTeX modes and is particularly useful in org
 Suppose you want it for  mode `XXX`:
 
 ```lisp
-(require 'ac-math)
-
 (add-to-list 'ac-modes 'XXX-mode)
 
 (defun ac-XXX-mode-setup ()
@@ -77,29 +64,16 @@ Suppose you want it for  mode `XXX`:
 ```
 
 
-## Other Sources ##
+## Custom sources ##
 
+You can use symbols lists to define your own ac sources. 
 
-Here is how to make the TaTeX completion work everywhere in LaTeX documents (default is only in math mode):
+Make math symbol completion work everywhere in LaTeX documents (default, `ac-source-math-latex` works only in math mode):
 
 ```lisp
 (defvar ac-source-math-latex-everywhere
 '((candidates . ac-math-symbols-latex)
-  (prefix . "\\\\\\(.*\\)")
+  (prefix . ac-math-prefix)
   (action . ac-math-action-latex)
   (symbol . "l")))
 ```
-
-
-Here is how to make unicode completion work with prefix "%" (prefix is deleted
-automatically on completion):
-
-```lisp
-(defvar ac-source-math-unicode-on-%
-'((candidates . ac-math-symbols-unicode)
-  (prefix . "%\\(.*\\)")
-  (action . ac-math-action-unicode)
-  (symbol . "u")))
-```
-
-Please let me know if you want anything different from above.
