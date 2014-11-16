@@ -53,6 +53,19 @@
 
 (require 'auto-complete)
 
+(defgroup ac-math nil
+  "Auto completion."
+  :group 'auto-complete
+  :prefix "ac-math")
+
+(defcustom ac-math-unicode-in-math-p nil
+  "Set this to t if unicode in math latex environments is needed."
+  :group 'ac-math)
+
+(defcustom ac-math-prefix-regexp "\\\\\\(.*\\)"
+  "Regexp matching the prefix of the ac-math symbol."
+  :group 'ac-math)
+
 (defconst ac-math-latex-commands
   '("address" "addtocounter" "addtolength" "addvspace" "Alph" "alph" "Alph
     example" "alsoname" "and for author" "appendix" "arabic" "arraycolsep"
@@ -3085,23 +3098,18 @@ the value of VALUE is the unicode character else it's the latex
 command."
   (delq nil
         (mapcar
-         '(lambda (el)
-            (let* ((symb (substring (nth 1 el) 1))
-                   (sep (if unicode "@" "#"))
-                   (ch (and (nth 2 el)
-                            (decode-char 'ucs (nth 2 el))))
-                   (uni-symb (and ch
-                                  (char-to-string ch)))
-                   (uni-string (propertize (concat
-                                            (propertize sep 'display "")
-                                            " " uni-symb)
-                                           'intangible t
-                                           'uni-symb t)))
-              (unless (and unicode (null uni-symb))
-                (cons (concat symb uni-string)
-                      (if unicode
-                          uni-symb
-                        symb)))))
+         #'(lambda (el)
+	     (let* ((symb (substring (nth 1 el) 1))
+		    ;; (sep (propertize ac-math--dummy 'display ""))
+		    (sep ac-math--dummy)
+		    (ch (and (nth 2 el) (decode-char 'ucs (nth 2 el))))
+		    (uni-symb (and ch (char-to-string ch)))
+		    (uni-string (concat sep uni-symb)))
+	       (unless (and unicode (null uni-symb))
+		 (cons (concat symb uni-string)
+		       (if unicode
+			   uni-symb
+			 symb)))))
          alist)))
 
 (defvar ac-math-symbols-latex
@@ -3116,73 +3124,65 @@ command."
            (ac-math--make-candidates ac-latex-math-extended-alist t)))
   "List of math completion candidates.")
 
-(defcustom ac-math-unicode-in-math-p nil
-  "Set this to t if need unicode in math enviroments")
-
-(defun ac-math-action-latex (&optional delete-N)
+(defun ac-math-action-latex (&optional del-backward)
   "Function to be used in ac action property.
-Substitute previous completion with the value of 'value property."
-  (let* ((start (previous-single-property-change (point) 'value))
-         (start-uni (previous-single-property-change (point) 'uni-symb))
-         (value (and start
-                     (get-text-property start 'value)))
-         (inhibit-point-motion-hooks t)
-         (delete-N (and delete-N
-                        (if (numberp delete-N)
-                            delete-N
-                          1)))
-         )
-    (when value
-      (delete-region start-uni (point))
-      (undo-boundary)
-      (delete-region start (point))
-      (if  delete-N
-          (backward-delete-char delete-N))
-      (insert value))
-    )
-  )
+Deletes the unicode symbol from the end of the completed
+string. If DEL-BACKWARD is non-nil, delete the name of the symbol
+instead."
+  (let ((pos (point))
+	(start-dummy (save-excursion
+		       (re-search-backward ac-math--dummy (point-at-bol) 'no-error)))
+	(end-dummy (match-end 0))
+	(inhibit-point-motion-hooks t))
+    (when start-dummy
+      (if del-backward
+	  (when end-dummy
+	    (goto-char start-dummy)
+	    (when (re-search-backward ac-math-prefix-regexp)
+	      (delete-region (match-beginning 0) end-dummy))
+	    (forward-word 1))
+	(delete-region start-dummy (point))))))
 
 (defun ac-math-action-unicode ()
-  (ac-math-action-latex 1))
+  (ac-math-action-latex 'backward))
 
 (defun ac-math-latex-math-face-p ()
   (let ((face (get-text-property (point) 'face)))
     (if (consp face)
         (eq  (car face) 'font-latex-math-face)
-      (eq face 'font-latex-math-face)
-      )))
+      (eq face 'font-latex-math-face))))
 
 (defun ac-math-candidates-latex ()
-    (when (ac-math-latex-math-face-p)
-      ac-math-symbols-latex)
-    )
+  (when (ac-math-latex-math-face-p)
+    ac-math-symbols-latex))
 
 (defun ac-math-candidates-unicode ()
-    (when (or ac-math-unicode-in-math-p
-              (not (ac-math-latex-math-face-p)))
-      ac-math-symbols-unicode)
-    )
+  (when (or ac-math-unicode-in-math-p
+	    (not (ac-math-latex-math-face-p)))
+    ac-math-symbols-unicode))
+
+(defun ac-math-prefix ()
+  "Return the location of the start of the current symbol.
+Uses `ac-math-prefix-regexp'."
+  (when (re-search-backward ac-math-prefix-regexp (point-at-bol) 'no-error)
+    (match-beginning 1)))
 
 (defvar ac-source-latex-commands
   '((candidates . ac-math-latex-commands)
     (symbol . "c")
-    (prefix . "\\\\\\(.*\\)")
-    ))
+    (prefix . ac-math-prefix)))
 
 (defvar ac-source-math-latex
   '((candidates . ac-math-candidates-latex)
-    (prefix . "\\\\\\(.*\\)")
-    (action . ac-math-action-latex)
     (symbol . "l")
-    ))
+    (prefix . ac-math-prefix)
+    (action . ac-math-action-latex)))
 
 (defvar ac-source-math-unicode
   '((candidates . ac-math-candidates-unicode)
-    (prefix . "\\\\\\(.*\\)")
-    (action . ac-math-action-unicode)
     (symbol . "u")
-    ))
-
+    (prefix . ac-math-prefix)
+    (action . ac-math-action-unicode)))
 
 (provide 'ac-math)
 
