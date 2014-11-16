@@ -3112,13 +3112,15 @@ command."
 			 symb)))))
          alist)))
 
-(defvar ac-math-symbols-latex
+;;;###autoload
+(defconst ac-math-symbols-latex
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist)
            (ac-math--make-candidates ac-latex-math-extended-alist)))
   "List of math completion candidates.")
 
-(defvar ac-math-symbols-unicode
+;;;###autoload
+(defconst ac-math-symbols-unicode
   (delete-dups
    (append (ac-math--make-candidates ac-latex-math-default-alist t)
            (ac-math--make-candidates ac-latex-math-extended-alist t)))
@@ -3167,17 +3169,20 @@ Uses `ac-math-prefix-regexp'."
   (when (re-search-backward ac-math-prefix-regexp (point-at-bol) 'no-error)
     (match-beginning 1)))
 
+;;;###autoload
 (defvar ac-source-latex-commands
   '((candidates . ac-math-latex-commands)
     (symbol . "c")
     (prefix . ac-math-prefix)))
 
+;;;###autoload
 (defvar ac-source-math-latex
   '((candidates . ac-math-candidates-latex)
     (symbol . "l")
     (prefix . ac-math-prefix)
     (action . ac-math-action-latex)))
 
+;;;###autoload
 (defvar ac-source-math-unicode
   '((candidates . ac-math-candidates-unicode)
     (symbol . "u")
